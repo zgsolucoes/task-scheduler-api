@@ -1,0 +1,11 @@
+wwwroot/*.js
+node_modules
+typings
+dist
+client-ts/
+.idea/
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+git_push.sh

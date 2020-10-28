@@ -1,0 +1,88 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
+buildscript {
+	repositories {
+		mavenLocal()
+		jcenter()
+		mavenCentral()
+	}
+}
+
+plugins {
+	id "org.openapi.generator" version "4.3.1"
+	id "com.moowork.node" version "1.3.1"
+}
+
+Collection<File> generatedFiles = [
+		file("$project.projectDir/client-ts/api"),
+		file("$project.projectDir/client-ts/model"),
+		file("$project.projectDir/client-ts/api.module.ts"),
+		file("$project.projectDir/client-ts/configuration.ts"),
+		file("$project.projectDir/client-ts/encoder.ts"),
+		file("$project.projectDir/client-ts/variables.ts"),
+]
+
+File distDirectory = file("$project.projectDir/dist")
+
+task cleanGenerated(type: Delete) {
+	delete(generatedFiles)
+}
+
+task cleanCompiled(type: Delete) {
+	delete(distDirectory)
+}
+
+task clean {
+	dependsOn(cleanGenerated, cleanCompiled)
+}
+
+task publish {
+	dependsOn(npm_publish)
+}
+
+ext {
+	specFile = file("$projectDir/api.spec.yaml")
+}
+
+task generateApi(type: GenerateTask, group: 'build') {
+	inputs.file(specFile)
+	outputs.files(generatedFiles)
+
+	generatorName = "typescript-angular"
+	inputSpec = specFile.toString()
+	skipValidateSpec = true
+	additionalProperties = [
+			modelPropertyNaming: "original",
+	]
+	outputDir = 'client-ts/'
+}
+
+node {
+	// Version of node to use.
+//	version = '0.11.10'
+//
+//	// Version of npm to use.
+//	npmVersion = '2.1.5'
+//
+//	// Version of Yarn to use.
+//	yarnVersion = '0.16.1'
+
+	// Base URL for fetching node distributions (change if you have a mirror).
+//	distBaseUrl = 'https://nodejs.org/dist'
+
+	// If true, it will download node using above parameters.
+	// If false, it will try to use globally installed node.
+//	download = true
+
+	// Set the work directory for unpacking node
+	workDir = file("${project.buildDir}/nodejs")
+
+	// Set the work directory for NPM
+	npmWorkDir = file("${project.buildDir}/npm")
+
+	// Set the work directory for Yarn
+	yarnWorkDir = file("${project.buildDir}/yarn")
+
+	// Set the work directory where node_modules should be located
+	nodeModulesDir = file("${project.projectDir}/client-ts")
+}
