@@ -1,0 +1,150 @@
+openapi: 3.0.0
+info:
+  description: task-scheduler-client
+  title: task-scheduler-client
+  version: ^1.0.0
+tags:
+  - name: Executavel
+paths:
+  /executavel/{id}:
+    get:
+      operationId: getExecutavelPorId
+      summary: Obtém um executável
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/schemas/Executavel'
+        '400':
+          description: Requisição inválida
+        '404':
+          description: Nenhum cadastrado
+        '500':
+          description: Ocorreu um erro inesperado.
+      security:
+        - jwt: [ ]
+  /executavel/list:
+    get:
+      operationId: getExecutaveis
+      summary: Obtém uma lista dos executáveis disponíveis
+      responses:
+        '200':
+          description: Listagem bem sucedida
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Executavel'
+        '400':
+          description: Requisição inválida
+        '404':
+          description: Nenhum tiss_version cadastrado
+        '500':
+          description: Ocorreu um erro inesperado.
+      security:
+        - jwt: [ ]
+  /executavel/adicionar:
+    post:
+      operationId: adicionarExecutavel
+      summary: Adicionar executável
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Executavel'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Requisição inválida
+        '404':
+          description: Nenhum tiss_version cadastrado
+        '500':
+          description: Ocorreu um erro inesperado.
+      security:
+        - jwt: [ ]
+  /executavel/atualizar/{id}:
+    post:
+      operationId: atualizarExecutavel
+      summary: Atualizar executável
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Executavel'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Requisição inválida
+        '404':
+          description: Nenhum tiss_version cadastrado
+        '500':
+          description: Ocorreu um erro inesperado.
+      security:
+        - jwt: [ ]
+  /executavel/remover/{id}:
+    delete:
+      operationId: removerExecutavel
+      summary: Remover executável
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Requisição inválida
+        '404':
+          description: Nenhum
+        '500':
+          description: Ocorreu um erro inesperado.
+      security:
+        - jwt: [ ]
+servers:
+  - url: 'http://localhost:8080/'
+components:
+  securitySchemes:
+    jwt:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://localhost:8080/login'
+          scopes:
+            read: Grants read access
+            write: Grants write access
+  schemas:
+    Parametro:
+      type: object
+      properties:
+        nome:
+          type: string
+        tipo:
+          type: string
+    Executavel:
+      type: object
+      properties:
+        titulo:
+          type: string
+        classeExecutavel:
+          type: string
+        parametros:
+          type: array
+          items:
+            $ref: '#/components/schemas/Parametro'
