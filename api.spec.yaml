@@ -31,6 +31,12 @@ paths:
     get:
       operationId: getExecutaveis
       summary: Obtém uma lista dos executáveis disponíveis
+      parameters:
+        - in: query
+          name: max
+          schema:
+            type: integer
+          required: false
       responses:
         '200':
           description: Listagem bem sucedida
