@@ -45,6 +45,7 @@ ext {
 }
 
 task generateApi(type: GenerateTask, group: 'build') {
+	dependsOn clean
 	inputs.file(specFile)
 	outputs.files(generatedFiles)
 
