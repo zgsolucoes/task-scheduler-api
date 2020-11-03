@@ -6,7 +6,7 @@ info:
 tags:
   - name: Executavel
 paths:
-  /executavel/{id}:
+  /executavel/show/{id}:
     get:
       operationId: getExecutavelPorId
       summary: Obtém um executável
@@ -71,13 +71,13 @@ paths:
         '400':
           description: Requisição inválida
         '404':
-          description: Nenhum tiss_version cadastrado
+          description: Nenhum cadastrado
         '500':
           description: Ocorreu um erro inesperado.
       security:
         - jwt: [ ]
   /executavel/atualizar/{id}:
-    post:
+    put:
       operationId: atualizarExecutavel
       summary: Atualizar executável
       parameters:
@@ -192,7 +192,7 @@ paths:
           description: Ocorreu um erro inesperado.
       security:
         - jwt: [ ]
-  /execucao/{id}:
+  /execucao/show/{id}:
     get:
       operationId: getExecucaoPorId
       summary: Obtém um execução
@@ -337,6 +337,7 @@ components:
           type: string
         dataCriacao:
           type: string
+          format: 'date-time'
         parametros:
           type: array
           items:
@@ -382,7 +383,7 @@ components:
           type: string
         data:
           type: string
-          format: date-time
+          format: 'date-time'
         status:
           $ref: '#/components/schemas/StatusEvento'
     StatusExecucao:
